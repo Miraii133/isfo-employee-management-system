@@ -1,5 +1,10 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  test: {},
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./tests/setup.js"],
+    testMatch: ["./src/*.test.jsx"],
+    globals: true,
+  },
 });
