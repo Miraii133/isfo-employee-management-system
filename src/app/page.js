@@ -1,12 +1,15 @@
-import EmployeeCard from "./components/EmployeeCard";
-import InputTextField from "./components/InputTextField";
-import RadioButton from "./components/RadioButton";
-import InputTypeFile from "./components/InputTypeFile";
+// import EmployeeCard from "./components/EmployeeCard";
+// import InputTextField from "./components/InputTextField";
+// import RadioButton from "./components/RadioButton";
+// import InputTypeFile from "./components/InputTypeFile";
+// import Form from "./components/Form";
+import EditEmployeeForm from "./components/EditEmployeeForm";
+import CreateEmployeeForm from "./components/CreateEmployeeForm";
 
 export default function Home() {
   return (
     <main>
-      <RadioButton
+      {/* <RadioButton
         labelname="testlabelname"
         labeltext="testlabeltext"
         name="testinputname"
@@ -20,6 +23,9 @@ export default function Home() {
         labeltext="Place file here"
         name="EmployeePic"
       />
+          <Form /> */}
+      {/* <EditEmployeeForm /> */}
+      <CreateEmployeeForm />
     </main>
   );
 }
