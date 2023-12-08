@@ -1,18 +1,18 @@
 import { PrismaClient } from '@prisma/client'
-
 const prisma = new PrismaClient()
 
-async function main() {
-   const user = await prisma.user.create({
+export default async function main() {
+   /*const user = await prisma.user.create({
     data: {
-      name: 'Alice',
-      email: 'alice@prisma.io',
+      name: 'bob',
+      email: 'alice@asdasd.io',
     },
-  })
-  console.log(user)
+  })*/
+  const users = await prisma.user.findMany()
+  console.log(users)
 }
 
-main()
+/*main()
   .then(async () => {
     await prisma.$disconnect()
   })
@@ -20,4 +20,5 @@ main()
     console.error(e)
     await prisma.$disconnect()
     process.exit(1)
-  })
+  })*/
+

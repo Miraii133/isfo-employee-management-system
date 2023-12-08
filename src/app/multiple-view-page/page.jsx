@@ -1,7 +1,8 @@
 import React from "react";
-
 function page() {
-  return <div>multiple-view-page</div>;
+  return <div>
+    Hello
+  </div>
 }
 
 export default page;
