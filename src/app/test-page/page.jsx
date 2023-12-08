@@ -1,14 +1,14 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { analyticsId } from "../../../next.config";
 
 const Page = () => {
   const [message, setMessage] = useState([]);
     useEffect(() => {
       const getData = async () => {
-        const query = await fetch('/api/test-page')
+        const query = await fetch('/api/test-page', {
+          method: 'GET'
+        })
         //const query = await fetch('/api/test-page');
-        //const response = await query.json();
         console.log('response from API', query)
         //setMessage(response)
       }
