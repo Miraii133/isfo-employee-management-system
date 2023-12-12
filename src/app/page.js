@@ -3,7 +3,8 @@
 // import RadioButton from "./components/RadioButton";
 // import InputTypeFile from "./components/InputTypeFile";
 // import Form from "./components/Form";
-import EditEmployeeForm from "./components/EditEmployeeForm";
+// import EditEmployeeForm from "./components/EditEmployeeForm";
+import MappingDataToEmployeCard from "./components/MappingDataToEmployeCard";
 import CreateEmployeeForm from "./components/CreateEmployeeForm";
 
 export default function Home() {
@@ -25,7 +26,8 @@ export default function Home() {
       />
           <Form /> */}
       {/* <EditEmployeeForm /> */}
-      <CreateEmployeeForm />
+      {/* <CreateEmployeeForm /> */}
+      <MappingDataToEmployeCard />
     </main>
   );
 }

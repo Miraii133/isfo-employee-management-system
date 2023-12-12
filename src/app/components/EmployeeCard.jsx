@@ -30,7 +30,7 @@ const EmployeeCard = ({
           {status}
         </h3>
 
-        <h1 className="text-2xl font-bold">{fullname}</h1>
+        <h1 className="text-lg font-bold">{fullname}</h1>
         <h3 className="text-sm text-gray-400">{email}</h3>
         <div className="p-2 gap-8">
           <h3 className="text-sm border rounded-full inline-block px-5 py-[0.5px]">
