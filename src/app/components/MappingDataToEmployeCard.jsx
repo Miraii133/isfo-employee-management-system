@@ -1,5 +1,5 @@
 "use client";
-
+// Import React
 import React, { useState } from "react";
 
 // Import the components
@@ -7,22 +7,39 @@ import EmployeeCard from "./EmployeeCard";
 import CreateEmployeeForm from "./CreateEmployeeForm";
 
 // Functional component
-export default function MappingDataToEmployeCard() {
+export default function MappingDataToEmployeeCard() {
   // State to manage employee data array
   const [employeeDataArray, setEmployeeDataArray] = React.useState([]);
+  const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
+    useState(false);
+  const [selectedEmployeeIndex, setSelectedEmployeeIndex] = useState(null);
 
   // Callback function to handle form submission
   const handleOnFormSubmit = (formData) => {
-    setEmployeeDataArray([...employeeDataArray, formData]);
-    setVisibleCreateEmployeeForm(false); // Reset form visibility
+    if (selectedEmployeeIndex !== null) {
+      // Update existing employee data
+      const updatedEmployeeDataArray = [...employeeDataArray];
+      updatedEmployeeDataArray[selectedEmployeeIndex] = formData;
+      setEmployeeDataArray(updatedEmployeeDataArray);
+      setSelectedEmployeeIndex(null); // Reset selected index after update
+    } else {
+      // Add new employee data
+      setEmployeeDataArray([...employeeDataArray, formData]);
+    }
+
+    setVisibleCreateEmployeeForm(false);
   };
 
-  const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
-    useState(false);
+  // Function to handle clicking on an employee card
+  const handleCardClick = (index) => {
+    setVisibleCreateEmployeeForm(true);
+    setSelectedEmployeeIndex(index);
+  };
 
   // Toggle form visibility
   const visibleForm = () => {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
+    setSelectedEmployeeIndex(null); // Reset selected index when showing/hiding the form
   };
 
   // JSX to render components
@@ -40,12 +57,24 @@ export default function MappingDataToEmployeCard() {
 
         <div className="p-10">
           {visibleCreateEmployeeForm && (
-            <CreateEmployeeForm onFormSubmit={handleOnFormSubmit} />
+            <CreateEmployeeForm
+              onFormSubmit={handleOnFormSubmit}
+              initialData={
+                selectedEmployeeIndex !== null
+                  ? employeeDataArray[selectedEmployeeIndex]
+                  : null
+              }
+            />
           )}
         </div>
-        <div className="flex flex-wrap pt-10">
+
+        <div className="flex flex-wrap p-10">
           {employeeDataArray.map((employeeData, index) => (
-            <EmployeeCard key={index} {...employeeData} />
+            <EmployeeCard
+              key={index}
+              {...employeeData}
+              onClick={() => handleCardClick(index)} // Pass index to handleCardClick
+            />
           ))}
         </div>
       </div>
