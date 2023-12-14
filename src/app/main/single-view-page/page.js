@@ -2,9 +2,8 @@
 // Import React
 import React, { useState } from "react";
 
-// Import the components
-import EmployeeCard from "./EmployeeCard";
-import CreateEmployeeForm from "./CreateEmployeeForm";
+import EmployeeCard from "@/app/components/EmployeeCard";
+import CreateEmployeeForm from "@/app/components/CreateEmployeeForm";
 
 // Functional component
 export default function MappingDataToEmployeeCard() {
@@ -15,16 +14,13 @@ export default function MappingDataToEmployeeCard() {
   const [selectedEmployeeIndex, setSelectedEmployeeIndex] = useState(null);
 
   // Callback function to handle form submission
-  const handleOnFormSubmit = (formData) => {
+  const handleUpdateEmployee = (formData) => {
     if (selectedEmployeeIndex !== null) {
       // Update existing employee data
       const updatedEmployeeDataArray = [...employeeDataArray];
       updatedEmployeeDataArray[selectedEmployeeIndex] = formData;
       setEmployeeDataArray(updatedEmployeeDataArray);
       setSelectedEmployeeIndex(null); // Reset selected index after update
-    } else {
-      // Add new employee data
-      setEmployeeDataArray([...employeeDataArray, formData]);
     }
 
     setVisibleCreateEmployeeForm(false);
@@ -51,14 +47,14 @@ export default function MappingDataToEmployeeCard() {
             onClick={visibleForm}
             className="w-3/4 p-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            {visibleCreateEmployeeForm ? "Close Form" : "Add Employee"}
+            {visibleCreateEmployeeForm ? "Close Form" : "Update Employee"}
           </button>
         </div>
 
         <div className="p-10">
           {visibleCreateEmployeeForm && (
             <CreateEmployeeForm
-              onFormSubmit={handleOnFormSubmit}
+              onFormSubmit={handleUpdateEmployee}
               initialData={
                 selectedEmployeeIndex !== null
                   ? employeeDataArray[selectedEmployeeIndex]
@@ -69,13 +65,18 @@ export default function MappingDataToEmployeeCard() {
         </div>
 
         <div className="flex flex-wrap p-10">
-          {employeeDataArray.map((employeeData, index) => (
-            <EmployeeCard
-              key={index}
-              {...employeeData}
-              onClick={() => handleCardClick(index)} // Pass index to handleCardClick
-            />
-          ))}
+          {employeeDataArray.map(
+            (employeeData, index) =>
+              selectedEmployeeIndex === index && (
+                <div key={index}>
+                  <EmployeeCard
+                    id={employeeData.id}
+                    {...employeeData}
+                    onClick={() => handleCardClick(index)}
+                  />
+                </div>
+              )
+          )}
         </div>
       </div>
     </div>
