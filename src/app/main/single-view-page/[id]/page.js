@@ -9,7 +9,6 @@ const SingleViewPage = ({ params }) => {
   const [employeeData, setEmployeeData] = useState({});
   const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
     useState(true);
-const [selectedUserIndex, setSelectedUserIndex] = useState({});
   useEffect(() => {
     const getEmployee = async () => {
       try {

@@ -13,7 +13,6 @@ export async function GET() {
     let requestBody = await request.json()
     await prisma.user.create({
     data: {
-      id: requestBody.id,
       email: requestBody.email,
       firstName: requestBody.firstName,
       middleName: requestBody.middleName,
