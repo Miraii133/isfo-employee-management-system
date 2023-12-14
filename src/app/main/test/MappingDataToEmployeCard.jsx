@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 
 // Import the components
-import EmployeeCard from "../components/EmployeeCard";
-import CreateEmployeeForm from "../components/CreateEmployeeForm";
+import EmployeeCard from "../../components/EmployeeCard";
+import CreateEmployeeForm from "../../components/CreateEmployeeForm";
 
 // Functional component
 export default function MappingDataToEmployeeCard() {
