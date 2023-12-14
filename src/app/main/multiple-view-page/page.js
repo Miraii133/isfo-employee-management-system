@@ -41,6 +41,10 @@ export default function MultipleViewPage() {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
   };
 
+  const handleCardClick = (index) => {
+    setVisibleCreateEmployeeForm(true);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-screen-lg">
@@ -69,6 +73,7 @@ export default function MultipleViewPage() {
                     email={message[index].email}
                     designation={message[index].designation}
                     status={message[index].employeeStatus}
+                    onClick={handleCardClick}
                   />
                   {/* {message[index].id + " , " + message[index].email + " ," + message[index].name} */}
                 </div>
