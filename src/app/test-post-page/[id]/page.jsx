@@ -27,8 +27,6 @@ const Page = ({params}) => {
          getEmployee();
      }, []);
 
-     console.log(message)
-
  return (
       <div key={message.id}>
         <EmployeeCard

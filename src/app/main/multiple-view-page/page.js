@@ -7,6 +7,9 @@ import CreateEmployeeForm from "@/app/components/CreateEmployeeForm";
 // Functional component for the multiple view page
 export default function MultipleViewPage() {
   const [message, setMessage] = useState([]);
+   const [employeeDataArray, setEmployeeDataArray] = useState([]);
+  const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
+    useState(false);
   useEffect(() => {
     const getEmployee = async () => {
       try {
@@ -28,14 +31,39 @@ export default function MultipleViewPage() {
     getEmployee();
   }, []);
 
-  // const [employeeDataArray, setEmployeeDataArray] = useState([]);
-  const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
-    useState(false);
+  const addEmployee = async () => {
+   try {
+        const response = await fetch('/api/employee', {
+          method: 'POST',
+          body: JSON.stringify(employeeDataArray),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-  const handleOnFormSubmit = (formData) => {
-    setEmployeeDataArray([...employeeDataArray, formData]);
-    setVisibleCreateEmployeeForm(false);
-  };
+        if (!response.ok) {
+          throw new Error('Failed to add employee');
+        }
+
+        // You can handle the response as needed
+        const addedEmployee = await response.json();
+        console.log('Employee added successfully:', addedEmployee)
+
+      } catch (error) {
+        console.error('Error adding employee:', error);
+      }
+    }
+  
+
+
+  const handleOnFormSubmit = async (formData) => {
+  setEmployeeDataArray(formData);
+};
+    useEffect(() => {
+      addEmployee();
+      console.log(employeeDataArray)
+      setVisibleCreateEmployeeForm(false);
+    }, [employeeDataArray]); // This will trigger the effect whenever employeeDataArray changes
 
   const visibleForm = () => {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
