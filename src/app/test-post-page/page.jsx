@@ -76,7 +76,7 @@ const Page = () => {
                 " , " +
                 message[index].email +
                 " ," +
-                message[index].name}
+                message[index].firstName}
             </div>
           );
         }
