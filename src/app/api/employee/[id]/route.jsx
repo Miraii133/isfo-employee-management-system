@@ -37,3 +37,17 @@ export async function PATCH(request, {params}){
     )
     return NextResponse.json({status:200})
 }
+
+export async function DELETE(request, {params}){
+    let employeeId = params.id
+    await prisma.user.delete(
+        {
+            where: {
+                id: parseInt(employeeId),
+            },
+           
+        }
+       
+    )
+    return NextResponse.json({status:200})
+}

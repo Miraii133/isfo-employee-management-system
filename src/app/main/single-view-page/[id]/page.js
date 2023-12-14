@@ -65,6 +65,7 @@ const [selectedUserIndex, setSelectedUserIndex] = useState({});
     try {
       const response = await fetch(`/api/employee/${params.id}`, {
         method: "DELETE",
+        body: JSON.stringify(params.id)
       });
 
       if (!response.ok) {
