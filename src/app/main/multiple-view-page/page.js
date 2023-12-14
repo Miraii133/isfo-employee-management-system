@@ -10,7 +10,7 @@ export default function MultipleViewPage() {
 
   const handleSelectedEmployee = (employeeId) => {
     router.push(
-      "/main/single-view-page/[id]",
+      //"/main/single-view-page/[id]",
       `/main/single-view-page/${employeeId}`
     );
 
@@ -115,7 +115,7 @@ export default function MultipleViewPage() {
                     email={message[index].email}
                     designation={message[index].designation}
                     status={message[index].employeeStatus}
-                    onClick={handleSelectedEmployee}
+                    onClick={() => handleSelectedEmployee(message[index].id)}
                   />
                   {/* {message[index].id + " , " + message[index].email + " ," + message[index].name} */}
                 </div>
