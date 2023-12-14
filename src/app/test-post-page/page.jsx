@@ -77,7 +77,7 @@ const Page = () => {
           designation={message[index].designation}
           status={message[index].employeeStatus}
         />
-        {message[index].id + " , " + message[index].email + " ," + message[index].name}
+        {message[index].id + " , " + message[index].email + " ," + message[index].firstName}
       </div>
     );
   }
