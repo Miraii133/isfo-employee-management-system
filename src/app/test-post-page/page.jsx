@@ -6,7 +6,7 @@ const Page = () => {
     useEffect(() => {
       const getData = async () => {
         return await fetch('/api/test-page', {
-          method: 'POST'
+          method: 'GET'
         })
         .then(function(response) {
       return response.json();
@@ -14,7 +14,6 @@ const Page = () => {
     
 }
       getData().then(value => {
-        console.log(value.message.value[0])
         setMessage(value)
         
       });

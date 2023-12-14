@@ -14,34 +14,37 @@ const Page = () => {
     
 }
       getData().then(value => {
-        console.log(value.message.value[0])
-        setMessage(value)
+        let arrayObject = Object.keys(value).map(key => value[key]);
+        setMessage(arrayObject)
+        
         
       });
-      
-
+    
     }, []);
-
-
   return <div>
     
     
           
      
      {
-          
-     /*message.map((data, key) => {
-          return (
+       /* message.map((data, key) => {
+          if (data.value[key] != null) {
+              console.log(data.value[0])
+      
+          }*/
+          /*return (
             <div key={key}>
-              {data.id +
+              {data.value.id[0] +
                 " , " +
-                data.email +
+                data.value.email[0] +
                 " ," +
-                data.name 
+                data.value.name[0]
               }
             </div>
-          );
-        })*/}
+          );*/
+        
+      }
+   
    
   </div>;
 
