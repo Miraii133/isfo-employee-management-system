@@ -61,6 +61,25 @@ const SingleViewPage = ({ params }) => {
     }
   };
 
+  const deleteEmployee = async () => {
+    try {
+      const response = await fetch(`/api/employee/${params.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete employee");
+      }
+
+      console.log("Employee deleted successfully");
+
+      // Update the local state or trigger a re-fetch
+      setEmployeeData({});
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
+  };
+
   const toggleFormVisibility = () => {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
   };
@@ -71,9 +90,15 @@ const SingleViewPage = ({ params }) => {
         <div className="flex items-center justify-center p-10">
           <button
             onClick={toggleFormVisibility}
-            className="w-3/4 p-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="w-full p-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             {visibleCreateEmployeeForm ? "Close Form" : "Update Employee"}
+          </button>
+          <button
+            onClick={deleteEmployee}
+            className="w-full p-6 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Delete
           </button>
         </div>
 
