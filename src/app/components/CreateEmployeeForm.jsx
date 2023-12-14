@@ -25,6 +25,7 @@ export default function CreateEmployeeForm({
       setFormData(selectedEmployee ? selectedEmployee : initialData);
     } else {
       setFormData({
+        id: "",
         firstName: "",
         middleName: "",
         lastName: "",

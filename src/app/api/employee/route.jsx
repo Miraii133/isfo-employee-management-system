@@ -9,9 +9,9 @@ export async function GET() {
   return NextResponse.json({ users, status: 200 });
 }
 // export async function HEAD(Request) {}
-export async function POST(request) {
-  let requestBody = await request.json();
-  await prisma.user.create({
+ export async function POST(request) {
+    let requestBody = await request.json()
+    await prisma.user.create({
     data: {
       id: requestBody.id,
       email: requestBody.email,
@@ -26,16 +26,4 @@ export async function POST(request) {
   return NextResponse.json({ status: 200 });
 }
 // export async function PUT(Request) {}
-export async function DELETE(Request) {
-  try {
-    const { id } = request.params;
-    await prisma.user.delete({ where: { id: Number(id) } });
-    return NextResponse.json({
-      status: 200,
-      message: "User deleted successfully",
-    });
-  } catch (error) {
-    console.error("Error deleting user:", error);
-    return NextResponse.json({ status: 500, message: "Internal server error" });
-  }
-}
+export async function DELETE(Request) {}

@@ -9,7 +9,7 @@ const SingleViewPage = ({ params }) => {
   const [employeeData, setEmployeeData] = useState({});
   const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
     useState(true);
-
+const [selectedUserIndex, setSelectedUserIndex] = useState({});
   useEffect(() => {
     const getEmployee = async () => {
       try {
@@ -34,7 +34,7 @@ const SingleViewPage = ({ params }) => {
   const handleUpdateFormSubmit = async (formData) => {
     try {
       const response = await fetch(`/api/employee/${params.id}`, {
-        method: "PUT",
+        method: "PATCH",
         body: JSON.stringify(formData),
         headers: {
           "Content-Type": "application/json",
@@ -65,6 +65,7 @@ const SingleViewPage = ({ params }) => {
     try {
       const response = await fetch(`/api/employee/${params.id}`, {
         method: "DELETE",
+        body: JSON.stringify(params.id)
       });
 
       if (!response.ok) {
