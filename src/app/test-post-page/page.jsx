@@ -17,12 +17,10 @@ const Page = () => {
 
         const data = await response.json();
         setMessage(data.users);
-        
       } catch (error) {
         console.error("Error fetching employee data:", error);
       }
     };
-    
 
     const addEmployee = async (employeeData) => {
       try {
@@ -48,7 +46,6 @@ const Page = () => {
 
     // Call getEmployee to fetch existing data when the component mounts
 
-
     // Call addEmployee with the necessary data
     const employeeData = {
       id: 2,
@@ -60,29 +57,30 @@ const Page = () => {
       employeeStatus: "active",
     };
     //addEmployee(employeeData);
-        getEmployee()
+    getEmployee();
   }, []);
-
-    
 
   return (
     <div>
-     {message.map((data, index) => {
-  if (data !== undefined) {
-    return (
-      <div key={index}>
-        <EmployeeCard
-          fullname={`${message[index].firstName} ${message[index].middleName} ${message[index].lastName}`}
-          email={message[index].email}
-          designation={message[index].designation}
-          status={message[index].employeeStatus}
-        />
-        {message[index].id + " , " + message[index].email + " ," + message[index].name}
-      </div>
-    );
-  }
-})}
-
+      {message.map((data, index) => {
+        if (data !== undefined) {
+          return (
+            <div key={index}>
+              <EmployeeCard
+                fullname={`${message[index].firstName} ${message[index].middleName} ${message[index].lastName}`}
+                email={message[index].email}
+                designation={message[index].designation}
+                status={message[index].employeeStatus}
+              />
+              {message[index].id +
+                " , " +
+                message[index].email +
+                " ," +
+                message[index].name}
+            </div>
+          );
+        }
+      })}
     </div>
   );
 };

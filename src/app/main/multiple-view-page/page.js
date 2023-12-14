@@ -1,12 +1,34 @@
 "use client";
 // Import React
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EmployeeCard from "@/app/components/EmployeeCard";
 import CreateEmployeeForm from "@/app/components/CreateEmployeeForm";
 
 // Functional component for the multiple view page
 export default function MultipleViewPage() {
-  const [employeeDataArray, setEmployeeDataArray] = useState([]);
+  const [message, setMessage] = useState([]);
+  useEffect(() => {
+    const getEmployee = async () => {
+      try {
+        const response = await fetch("/api/employee", {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch employee data");
+        }
+
+        const data = await response.json();
+        setMessage(data.users);
+      } catch (error) {
+        console.error("Error fetching employee data:", error);
+      }
+    };
+
+    getEmployee();
+  }, []);
+
+  // const [employeeDataArray, setEmployeeDataArray] = useState([]);
   const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
     useState(false);
 
@@ -38,9 +60,25 @@ export default function MultipleViewPage() {
         </div>
 
         <div className="flex flex-wrap p-10">
-          {employeeDataArray.map((employeeData, index) => (
+          {message.map((data, index) => {
+            if (data !== undefined) {
+              return (
+                <div key={index}>
+                  <EmployeeCard
+                    fullname={`${message[index].firstName} ${message[index].middleName} ${message[index].lastName}`}
+                    email={message[index].email}
+                    designation={message[index].designation}
+                    status={message[index].employeeStatus}
+                  />
+                  {/* {message[index].id + " , " + message[index].email + " ," + message[index].name} */}
+                </div>
+              );
+            }
+          })}
+
+          {/* {employeeDataArray.map((employeeData, index) => (
             <EmployeeCard key={index} id={employeeData.id} {...employeeData} />
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
