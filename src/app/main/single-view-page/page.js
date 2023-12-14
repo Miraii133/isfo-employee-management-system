@@ -13,14 +13,38 @@ export default function MappingDataToEmployeeCard() {
     useState(false);
   const [selectedEmployeeIndex, setSelectedEmployeeIndex] = useState(null);
 
-  // Callback function to handle form submission
-  const handleUpdateEmployee = (formData) => {
+const updateEmployee = async () => {
+   try {
+        const response = await fetch('/api/employee', {
+          method: 'POST',
+          body: JSON.stringify(employeeDataArray),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to add employee');
+        }
+
+        // You can handle the response as needed
+        const addedEmployee = await response.json();
+        console.log('Employee added successfully:', addedEmployee)
+
+      } catch (error) {
+        console.error('Error adding employee:', error);
+      }
+    }
+
+
+  const handleUpdateEmployee = async (formData) => {
     if (selectedEmployeeIndex !== null) {
       // Update existing employee data
       const updatedEmployeeDataArray = [...employeeDataArray];
       updatedEmployeeDataArray[selectedEmployeeIndex] = formData;
-      setEmployeeDataArray(updatedEmployeeDataArray);
+      await setEmployeeDataArray(updatedEmployeeDataArray);
       setSelectedEmployeeIndex(null); // Reset selected index after update
+      updateEmployee()
     }
 
     setVisibleCreateEmployeeForm(false);
