@@ -1,14 +1,15 @@
+// CreateEmployeeForm.js
+
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import InputTextField from "./InputTextField";
 import RadioButton from "./RadioButton";
-import InputTypeFile from "./InputTypeFile";
-import { useState } from "react";
 
-const CreateEmployeeForm = () => {
-  //first is to initialize variables for the form
-  //wherein data like first_name: "is still a null string"
-  //this initialization will be stored in the formData
+export default function CreateEmployeeForm({
+  onFormSubmit,
+  initialData,
+  selectedEmployee,
+}) {
   const [formData, setFormData] = useState({
     first_name: "",
     middle_name: "",
@@ -17,54 +18,123 @@ const CreateEmployeeForm = () => {
     unit: "",
     designation: "",
     status: "",
-    employee_pic: null,
   });
-  console.log(formData);
-  //function handleInputChange will handle for changes in the data
-  //sample is first_name: "John Big D"
-  //gets each name, type and value of all input types
-  //   const handleInputChange = (e) => {
-  //     const { name, value, type } = e.target.value;
-  //     //purpose of check_type_value is to check whether if the changes in the Input type is a file for Input Type File or a text or radio
-  //     const check_type_value = type === "file" ? e.target.files[0] : value;
 
-  //     setFormData({
-  //       ...formData, //this has the stored data of all changes occurred in the form
-  //       [name]: value, // Updates the specific field "name" with the new value
-  //     });
-  //   };
+  useEffect(() => {
+    if (selectedEmployee || initialData) {
+      setFormData(selectedEmployee ? selectedEmployee : initialData);
+    } else {
+      setFormData({
+        first_name: "",
+        middle_name: "",
+        last_name: "",
+        email: "",
+        unit: "",
+        designation: "",
+        status: "",
+      });
+    }
+  }, [selectedEmployee, initialData]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const updatedFormData = {
+      ...formData,
+      [name]: value,
+    };
+
+    if (
+      name === "first_name" ||
+      name === "middle_name" ||
+      name === "last_name"
+    ) {
+      if (name === "middle_name") {
+        updatedFormData.fullname = `${updatedFormData.first_name} ${value
+          .charAt(0)
+          .toUpperCase()}. ${updatedFormData.last_name}`;
+      } else {
+        updatedFormData.fullname = `${updatedFormData.first_name} ${
+          updatedFormData.middle_name
+            ? updatedFormData.middle_name.charAt(0).toUpperCase() + "."
+            : ""
+        } ${updatedFormData.last_name}`;
+      }
+    }
+
+    setFormData(updatedFormData);
+  };
+
+  const isFormValid = () => {
+    return (
+      formData.first_name.trim() !== "" &&
+      formData.middle_name.trim() !== "" &&
+      formData.last_name.trim() !== "" &&
+      formData.email.trim() !== "" &&
+      formData.unit.trim() !== "" &&
+      formData.designation.trim() !== "" &&
+      formData.status.trim() !== ""
+    );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!isFormValid()) {
+      console.log("Incomplete or invalid form data");
+      return;
+    }
+
+    console.log("Submitting form data:", formData);
+
+    onFormSubmit(formData);
+
+    setFormData({
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      email: "",
+      unit: "",
+      designation: "",
+      status: "",
+    });
+
+    console.log("Successfully passed form data to employee card");
+  };
+
   return (
     <div>
-      <form className="w-full mx-auto bg-white p-6 shadow-md rounded-md grid grid-cols-2 gap-8">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full mx-auto bg-white p-6 shadow-md rounded-md grid grid-cols-2 gap-8"
+      >
         <InputTextField
           name="first_name"
-          placeholder="First Name"
+          placeholder={initialData ? initialData.first_name : "First Name"}
+          onChange={handleInputChange}
           value={formData.first_name}
-          //   onChange={handleInputChange}
           className="mb-4"
         />
         <InputTextField
           name="middle_name"
-          placeholder="Middle Name"
+          placeholder={initialData ? initialData.middle_name : "Middle Name"}
+          onChange={handleInputChange}
           value={formData.middle_name}
-          //   onChange={handleInputChange}
           className="mb-4"
         />
         <InputTextField
           name="last_name"
-          placeholder="Last Name"
+          placeholder={initialData ? initialData.last_name : "Last Name"}
+          onChange={handleInputChange}
           value={formData.last_name}
-          //   onChange={handleInputChange}
           className="mb-4"
         />
         <InputTextField
           name="email"
-          placeholder="Email"
+          placeholder={initialData ? initialData.email : "Email"}
+          onChange={handleInputChange}
           value={formData.email}
-          //   onChange={handleInputChange}
           className="mb-6"
         />
-
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Education Level
@@ -73,16 +143,18 @@ const CreateEmployeeForm = () => {
             <RadioButton
               labelname="basic_education"
               labeltext="Basic Education"
-              name={formData.unit}
-              //   onChange={handleInputChange}
-              value="basic_education"
+              name="unit"
+              value="Basic Education"
+              onChange={handleInputChange}
+              checked={formData.unit === "Basic Education"}
             />
             <RadioButton
               labelname="higher_education"
               labeltext="Higher Education"
-              name={formData.unit}
-              //   onChange={handleInputChange}
-              value="higher_education"
+              name="unit"
+              value="Higher Education"
+              onChange={handleInputChange}
+              checked={formData.unit === "Higher Education"}
             />
           </div>
         </div>
@@ -95,30 +167,34 @@ const CreateEmployeeForm = () => {
             <RadioButton
               labelname="ntp"
               labeltext="NTP"
-              name={formData.designation}
-              //   onChange={handleInputChange}
-              value="ntp"
+              name="designation"
+              value="NTP"
+              onChange={handleInputChange}
+              checked={formData.designation === "NTP"}
             />
             <RadioButton
               labelname="academic_faculty"
               labeltext="Academic Faculty"
-              name={formData.designation}
-              //   onChange={handleInputChange}
-              value="academic_faculty"
+              name="designation"
+              value="Academic Faculty"
+              onChange={handleInputChange}
+              checked={formData.designation === "Academic Faculty"}
             />
             <RadioButton
               labelname="formation_faculty"
               labeltext="Formation Faculty"
-              name={formData.designation}
-              //   onChange={handleInputChange}
-              value="formation_faculty"
+              name="designation"
+              value="Formation Faculty"
+              onChange={handleInputChange}
+              checked={formData.designation === "Formation Faculty"}
             />
             <RadioButton
               labelname="non_teaching_faculty"
               labeltext="Non-Teaching Faculty"
-              name={formData.designation}
-              //   onChange={handleInputChange}
-              value="non_teaching_faculty"
+              name="designation"
+              value="Non-Teaching Faculty"
+              onChange={handleInputChange}
+              checked={formData.designation === "Non-Teaching Faculty"}
             />
           </div>
         </div>
@@ -131,37 +207,32 @@ const CreateEmployeeForm = () => {
             <RadioButton
               labelname="active"
               labeltext="Active"
-              name={formData.status}
-              //   onChange={handleInputChange}
-              value="active"
+              name="status"
+              value="Active"
+              onChange={handleInputChange}
+              checked={formData.status === "Active"}
             />
             <RadioButton
               labelname="inactive"
               labeltext="Inactive"
-              name={formData.status}
-              //   onChange={handleInputChange}
-              value="inactive"
+              name="status"
+              value="Inactive"
+              onChange={handleInputChange}
+              checked={formData.status === "Inactive"}
             />
           </div>
         </div>
 
-        <InputTypeFile
-          labelname="employee_picture"
-          labeltext="Employee Picture"
-          name={formData.employee_picture}
-          //   onChange={handleInputChange}
-          className="mb-6"
-        />
-
         <button
-          type="create_employee"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded col-span-2"
+          type="submit"
+          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded col-span-2 ${
+            !isFormValid() && "opacity-50 cursor-not-allowed"
+          }`}
+          disabled={!isFormValid()}
         >
-          Create Employee
+          {initialData ? "Update" : "Submit"}
         </button>
       </form>
     </div>
   );
-};
-
-export default CreateEmployeeForm;
+}
