@@ -4,34 +4,94 @@ import React, { useEffect, useState } from "react";
 const Page = () => {
   const [message, setMessage] = useState([]);
     useEffect(() => {
-      const getData = async () => {
-        return await fetch('/api/test-page', {
+    const getEmployee = async () => {
+      try {
+        const response = await fetch('/api/employee', {
           method: 'GET'
-        })
-        .then(function(response) {
-      return response.json();
-    })
-    
-}
-      getData().then(value => {
-        setMessage(value)
-        
-      });
-      
+        });
 
-    }, []);
+        if (!response.ok) {
+          throw new Error('Failed to fetch employee data');
+        }
 
+        const data = await response.json();
+        setMessage(Object.keys(data).map(key => data[key]));
 
-  return <div>
-    
-    
-          
-     
-     {
-          
-    }
-   
-  </div>;
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
+      }
+    };
+
+    const addEmployee = async (employeeData) => {
+      try {
+        const response = await fetch('/api/employee', {
+          method: 'POST',
+          body: JSON.stringify(employeeData),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to add employee');
+        }
+
+        // You can handle the response as needed
+        const addedEmployee = await response.json();
+        console.log('Employee added successfully:', addedEmployee)
+
+      } catch (error) {
+        console.error('Error adding employee:', error);
+      }
+    };
+
+    // Call getEmployee to fetch existing data when the component mounts
+    getEmployee();
+
+    // Call addEmployee with the necessary data
+    const employeeData = {
+      id: 2,
+      email: 'jiyo@asdasdgmail.com',
+      firstName: 'Jiyo',
+      middleName: 'Nercuit',
+      lastName: 'Valmoria',
+      designation: 'NTP',
+      employeeStatus: 'active'
+    };
+    addEmployee(employeeData);
+
+  }, []); 
+
+    return (
+      <div>
+        {
+          message.map((data, key) => {
+            if (data[key] != undefined){
+            return (
+              <div key={key}>
+                 {data[key].id +
+                " , " +
+                data[key].email +
+                " ," +
+                data[key].name 
+              }
+              </div>
+              
+            )
+            }
+                
+             
+                
+            })
+            
+           
+        }
+
+         
+        </div>
+       
+    )
+
 
   }
 export default Page;
