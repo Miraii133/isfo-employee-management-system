@@ -9,9 +9,6 @@ const prisma = new PrismaClient()
 // export async function HEAD(Request) {}
  export async function POST(request) {
     let requestBody = await request.json()
-    //console.log(request.json())
-    /*console.log("Hello!")
-    console.log(requestBody.email)*/
     await prisma.user.create({
     data: {
       id: requestBody.id,

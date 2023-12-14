@@ -1,12 +1,14 @@
 "use client"
 import React, { useEffect, useState } from "react";
 
-const Page = () => {
+const Page = ({params}) => {
+  
   const [message, setMessage] = useState([]);
-    useEffect(() => {
+
+  let employeeId = params.id
     const getEmployee = async () => {
       try {
-        const response = await fetch('/api/employee', {
+        const response = await fetch(`/api/employee/${employeeId}`, {
           method: 'GET'
         });
 
@@ -15,15 +17,17 @@ const Page = () => {
         }
 
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         setMessage(Object.keys(data).map(key => data[key]));
       } catch (error) {
         console.error('Error fetching employee data:', error);
       }
     };
-    
 
-    const addEmployee = async (employeeData) => {
+    // Call the function to fetch employee data
+
+   
+ /* const addEmployee = async (employeeData) => {
       try {
         const response = await fetch('/api/employee', {
           method: 'POST',
@@ -62,12 +66,12 @@ const Page = () => {
     };
     addEmployee(employeeData);*/
    
-  }, []);
 
     return (
       <div>
         {
           
+      
           /*message.map((data, key) => {
             if (data[key] != undefined){
             return (
