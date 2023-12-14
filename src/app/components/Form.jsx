@@ -3,22 +3,34 @@ import InputTextField from "./InputTextField";
 import RadioButton from "./RadioButton";
 import InputTypeFile from "./InputTypeFile";
 
-const EditEmployeeForm = () => {
+const Form = () => {
   return (
     <div>
       <form class="w-full mx-auto bg-white p-6 shadow-md rounded-md grid grid-cols-2 gap-8">
         <InputTextField
           name="first_name"
           placeholder="First Name"
+          value="first_name"
           class="mb-4"
         />
         <InputTextField
           name="middle_name"
           placeholder="Middle Name"
+          value="middle_name"
           class="mb-4"
         />
-        <InputTextField name="last_name" placeholder="Last Name" class="mb-4" />
-        <InputTextField name="email" placeholder="Email" class="mb-6" />
+        <InputTextField
+          name="last_name"
+          value="last_name"
+          placeholder="Last Name"
+          class="mb-4"
+        />
+        <InputTextField
+          name="email"
+          value="email"
+          placeholder="Email"
+          class="mb-6"
+        />
 
         <div class="mb-6">
           <label class="block text-gray-700 text-sm font-bold mb-2">
@@ -96,18 +108,19 @@ const EditEmployeeForm = () => {
           labelname="employee_picture"
           labeltext="Employee Picture"
           name="employee_picture"
+          value="employee_picture"
           class="mb-6"
         />
 
         <button
-          type="edit_employee"
+          type="submit"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded col-span-2"
         >
-          Edit Employee
+          Submit
         </button>
       </form>
     </div>
   );
 };
 
-export default EditEmployeeForm;
+export default Form;
