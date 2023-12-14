@@ -3,9 +3,19 @@
 import React, { useState, useEffect } from "react";
 import EmployeeCard from "@/app/components/EmployeeCard";
 import CreateEmployeeForm from "@/app/components/CreateEmployeeForm";
-
+import { useRouter } from "next/navigation";
 // Functional component for the multiple view page
 export default function MultipleViewPage() {
+  const router = useRouter();
+
+  const handleSelectedEmployee = (employeeId) => {
+    router.push(
+      "/main/single-view-page/[id]",
+      `/main/single-view-page/${employeeId}`
+    );
+
+    setVisibleCreateEmployeeForm(true);
+  };
   const [message, setMessage] = useState([]);
    const [employeeDataArray, setEmployeeDataArray] = useState([]);
   const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
@@ -77,10 +87,6 @@ export default function MultipleViewPage() {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
   };
 
-  const handleCardClick = (index) => {
-    setVisibleCreateEmployeeForm(true);
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-screen-lg">
@@ -109,7 +115,7 @@ export default function MultipleViewPage() {
                     email={message[index].email}
                     designation={message[index].designation}
                     status={message[index].employeeStatus}
-                    onClick={handleCardClick}
+                    onClick={handleSelectedEmployee}
                   />
                   {/* {message[index].id + " , " + message[index].email + " ," + message[index].name} */}
                 </div>
