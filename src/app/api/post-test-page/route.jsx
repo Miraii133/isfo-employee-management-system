@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server'
 }
 // export async function HEAD(Request) {}
  export async function POST(Request) {
+    addToDB()
     return NextResponse.json({status: 200})
  }
 // export async function PUT(Request) {}

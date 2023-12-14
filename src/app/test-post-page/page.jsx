@@ -6,7 +6,7 @@ const Page = () => {
     useEffect(() => {
       const getData = async () => {
         return await fetch('/api/test-page', {
-          method: 'GET'
+          method: 'POST'
         })
         .then(function(response) {
       return response.json();
@@ -30,18 +30,7 @@ const Page = () => {
      
      {
           
-     /*message.map((data, key) => {
-          return (
-            <div key={key}>
-              {data.id +
-                " , " +
-                data.email +
-                " ," +
-                data.name 
-              }
-            </div>
-          );
-        })*/}
+    }
    
   </div>;
 

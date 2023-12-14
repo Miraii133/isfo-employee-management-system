@@ -6,13 +6,19 @@ export async function getFromDB(){
     return users;
 }
 
-export async function addToDB(){
-/*const user = await prisma.user.create({
+export async function addToDB(Employee){
+const user = await prisma.user.create({
     data: {
-      name: 'bob',
-      email: 'alice@asdasd.io',
+      firstName: 'Jiyo',
+      middleName: 'Nercuit',
+      lastName: 'Valmoria',
+      unit: 'CS',
+      designation: 'Academic Faculty',
+      employeeStatus: 'Active',
     },
-  })*/
+  }
+  )
+   return 200
 }
 
 export async function updateToDB(){
