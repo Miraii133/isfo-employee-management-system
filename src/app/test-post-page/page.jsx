@@ -16,12 +16,8 @@ const Page = () => {
         }
 
         const data = await response.json();
-<<<<<<< HEAD
-        console.log(data)
-        setMessage(Object.keys(data).map(key => data[key]));
-=======
-        setMessage(Object.keys(data).map((key) => data[key]));
->>>>>>> a5f6a12faaccb3e2e7eff3de03e7adf3a5f8965b
+        setMessage(data.users);
+        
       } catch (error) {
         console.error("Error fetching employee data:", error);
       }
@@ -51,49 +47,9 @@ const Page = () => {
     };
 
     // Call getEmployee to fetch existing data when the component mounts
-    getEmployee();
 
 
     // Call addEmployee with the necessary data
-<<<<<<< HEAD
-    /*const employeeData = {
-      id: 3,
-      email: 'jiyo@asdasasdasdsadgmail.com',
-      firstName: 'Jiyo',
-      middleName: 'Nercuit',
-      lastName: 'Valmoria',
-      designation: 'NTP',
-      employeeStatus: 'active'
-    };
-    addEmployee(employeeData);*/
-   
-  }, []);
-
-    return (
-      <div>
-        {
-          
-          /*message.map((data, key) => {
-            if (data[key] != undefined){
-            return (
-              <div key={key}>
-                 {data[key].id +
-                " , " +
-                data[key].email +
-                " ," +
-                data[key].name 
-              }
-              </div>
-              
-            )
-            }
-                
-             
-                
-            })*/
-            
-           
-=======
     const employeeData = {
       id: 2,
       email: "jiyo@asdasdgmail.com",
@@ -103,28 +59,30 @@ const Page = () => {
       designation: "NTP",
       employeeStatus: "active",
     };
-    addEmployee(employeeData);
+    //addEmployee(employeeData);
+        getEmployee()
   }, []);
+
+    
 
   return (
     <div>
-      {message.map((data, key) => {
-        if (data[key] != undefined) {
-          return (
-            <div key={key}>
-              <EmployeeCard
-                fullname={`${data[key].firstName} ${data[key].middleName} ${data[key].lastName}`}
-                email={data[key].email}
-                // unit={data.unit} // Replace with the actual property name from your data
-                designation={data[key].designation}
-                status={data[key].employeeStatus}
-              />
-              {data[key].id + " , " + data[key].email + " ," + data[key].name}
-            </div>
-          );
->>>>>>> a5f6a12faaccb3e2e7eff3de03e7adf3a5f8965b
-        }
-      })}
+     {message.map((data, index) => {
+  if (data !== undefined) {
+    return (
+      <div key={index}>
+        <EmployeeCard
+          fullname={`${message[index].firstName} ${message[index].middleName} ${message[index].lastName}`}
+          email={message[index].email}
+          designation={message[index].designation}
+          status={message[index].employeeStatus}
+        />
+        {message[index].id + " , " + message[index].email + " ," + message[index].name}
+      </div>
+    );
+  }
+})}
+
     </div>
   );
 };
