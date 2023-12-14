@@ -9,9 +9,9 @@ export async function GET() {
   return NextResponse.json({ users, status: 200 });
 }
 // export async function HEAD(Request) {}
- export async function POST(request) {
-    let requestBody = await request.json()
-    await prisma.user.create({
+export async function POST(request) {
+  let requestBody = await request.json();
+  await prisma.user.create({
     data: {
       id: requestBody.id,
       email: requestBody.email,

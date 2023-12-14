@@ -1,17 +1,19 @@
+// SingleViewPage.js
+
 "use client";
 import React, { useState, useEffect } from "react";
 import CreateEmployeeForm from "@/app/components/CreateEmployeeForm";
 import EmployeeCard from "@/app/components/EmployeeCard";
-const Page = ({ params }) => {
-  const [message, setMessage] = useState([]);
+
+const SingleViewPage = ({ params }) => {
+  const [employeeData, setEmployeeData] = useState({});
   const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
     useState(true);
 
   useEffect(() => {
-    let employeeId = params.id;
     const getEmployee = async () => {
       try {
-        const response = await fetch(`/api/employee/${employeeId}`, {
+        const response = await fetch(`/api/employee/${params.id}`, {
           method: "GET",
         });
 
@@ -20,13 +22,44 @@ const Page = ({ params }) => {
         }
 
         const data = await response.json();
-        setMessage(data.users);
+        setEmployeeData(data.users);
       } catch (error) {
         console.error("Error fetching employee data:", error);
       }
     };
+
     getEmployee();
-  }, []);
+  }, [params.id]);
+
+  const handleUpdateFormSubmit = async (formData) => {
+    try {
+      const response = await fetch(`/api/employee/${params.id}`, {
+        method: "PUT",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update employee");
+      }
+
+      const updatedEmployee = await response.json();
+      console.log("Employee updated successfully:", updatedEmployee);
+
+      // Update the local state with the modified form data
+      setEmployeeData((prevData) => ({
+        ...prevData,
+        ...updatedEmployee,
+      }));
+
+      // Close the form after successful update
+      setVisibleCreateEmployeeForm(false);
+    } catch (error) {
+      console.error("Error updating employee:", error);
+    }
+  };
 
   const toggleFormVisibility = () => {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
@@ -46,22 +79,21 @@ const Page = ({ params }) => {
 
         <div className="p-10">
           {visibleCreateEmployeeForm && (
-            <CreateEmployeeForm // Pass the current employee data as initial data
+            <CreateEmployeeForm
+              onFormSubmit={handleUpdateFormSubmit}
+              initialData={employeeData}
             />
           )}
         </div>
 
         <div className="flex flex-wrap p-10">
           <div>
-            <div key={message.id}>
-              <EmployeeCard
-                fullname={`${message.firstName} ${message.middleName} ${message.lastName}`}
-                email={message.email}
-                designation={message.designation}
-                status={message.employeeStatus}
-              />
-              {message.id + " , " + message.email + " ," + message.firstName}
-            </div>
+            <EmployeeCard
+              fullname={`${employeeData.firstName} ${employeeData.middleName} ${employeeData.lastName}`}
+              email={employeeData.email}
+              designation={employeeData.designation}
+              status={employeeData.employeeStatus}
+            />
           </div>
         </div>
       </div>
@@ -69,4 +101,4 @@ const Page = ({ params }) => {
   );
 };
 
-export default Page;
+export default SingleViewPage;

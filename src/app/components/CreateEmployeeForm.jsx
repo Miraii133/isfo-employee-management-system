@@ -43,11 +43,7 @@ export default function CreateEmployeeForm({
       [name]: value,
     };
 
-    if (
-      name === "firstName" ||
-      name === "middleName" ||
-      name === "lastName"
-    ) {
+    if (name === "firstName" || name === "middleName" || name === "lastName") {
       if (name === "middleName") {
         updatedFormData.fullname = `${updatedFormData.firstName} ${value
           .charAt(0)
@@ -66,13 +62,13 @@ export default function CreateEmployeeForm({
 
   const isFormValid = () => {
     return (
-      formData.firstName.trim() !== "" &&
-      formData.middleName.trim() !== "" &&
-      formData.lastName.trim() !== "" &&
-      formData.email.trim() !== "" &&
-      formData.unit.trim() !== "" &&
-      formData.designation.trim() !== "" &&
-      formData.status.trim() !== ""
+      (formData.firstName ?? "").trim() !== "" &&
+      (formData.middleName ?? "").trim() !== "" &&
+      (formData.lastName ?? "").trim() !== "" &&
+      (formData.email ?? "").trim() !== "" &&
+      (formData.unit ?? "").trim() !== "" &&
+      (formData.designation ?? "").trim() !== "" &&
+      (formData.employeeStatus ?? "").trim() !== ""
     );
   };
 
@@ -88,19 +84,21 @@ export default function CreateEmployeeForm({
 
     onFormSubmit(formData);
 
-    setFormData({
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      email: "",
-      unit: "",
-      designation: "",
-      employeeStatus: "",
-    });
+    // Reset form data only if it's a new submission (not an update)
+    if (!selectedEmployee && !initialData) {
+      setFormData({
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        email: "",
+        unit: "",
+        designation: "",
+        employeeStatus: "",
+      });
+    }
 
     console.log("Successfully passed form data to employee card");
   };
-
   return (
     <div>
       <form
@@ -207,18 +205,18 @@ export default function CreateEmployeeForm({
             <RadioButton
               labelname="active"
               labeltext="Active"
-              name="status"
+              name="employeeStatus"
               value="Active"
               onChange={handleInputChange}
-              checked={formData.status === "Active"}
+              checked={formData.employeeStatus === "Active"}
             />
             <RadioButton
               labelname="inactive"
               labeltext="Inactive"
-              name="status"
+              name="employeeStatus"
               value="Inactive"
               onChange={handleInputChange}
-              checked={formData.status === "Inactive"}
+              checked={formData.employeeStatus === "Inactive"}
             />
           </div>
         </div>
