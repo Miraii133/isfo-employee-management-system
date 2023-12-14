@@ -11,13 +11,13 @@ export default function CreateEmployeeForm({
   selectedEmployee,
 }) {
   const [formData, setFormData] = useState({
-    first_name: "",
-    middle_name: "",
-    last_name: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     email: "",
     unit: "",
     designation: "",
-    status: "",
+    employeeStatus: "",
   });
 
   useEffect(() => {
@@ -25,13 +25,13 @@ export default function CreateEmployeeForm({
       setFormData(selectedEmployee ? selectedEmployee : initialData);
     } else {
       setFormData({
-        first_name: "",
-        middle_name: "",
-        last_name: "",
+        firstName: "",
+        middleName: "",
+        lastName: "",
         email: "",
         unit: "",
         designation: "",
-        status: "",
+        employeeStatus: "",
       });
     }
   }, [selectedEmployee, initialData]);
@@ -44,20 +44,20 @@ export default function CreateEmployeeForm({
     };
 
     if (
-      name === "first_name" ||
-      name === "middle_name" ||
-      name === "last_name"
+      name === "firstName" ||
+      name === "middleName" ||
+      name === "lastName"
     ) {
-      if (name === "middle_name") {
-        updatedFormData.fullname = `${updatedFormData.first_name} ${value
+      if (name === "middleName") {
+        updatedFormData.fullname = `${updatedFormData.firstName} ${value
           .charAt(0)
-          .toUpperCase()}. ${updatedFormData.last_name}`;
+          .toUpperCase()}. ${updatedFormData.lastName}`;
       } else {
-        updatedFormData.fullname = `${updatedFormData.first_name} ${
-          updatedFormData.middle_name
-            ? updatedFormData.middle_name.charAt(0).toUpperCase() + "."
+        updatedFormData.fullname = `${updatedFormData.firstName} ${
+          updatedFormData.middleName
+            ? updatedFormData.middleName.charAt(0).toUpperCase() + "."
             : ""
-        } ${updatedFormData.last_name}`;
+        } ${updatedFormData.lastName}`;
       }
     }
 
@@ -66,9 +66,9 @@ export default function CreateEmployeeForm({
 
   const isFormValid = () => {
     return (
-      formData.first_name.trim() !== "" &&
-      formData.middle_name.trim() !== "" &&
-      formData.last_name.trim() !== "" &&
+      formData.firstName.trim() !== "" &&
+      formData.middleName.trim() !== "" &&
+      formData.lastName.trim() !== "" &&
       formData.email.trim() !== "" &&
       formData.unit.trim() !== "" &&
       formData.designation.trim() !== "" &&
@@ -89,13 +89,13 @@ export default function CreateEmployeeForm({
     onFormSubmit(formData);
 
     setFormData({
-      first_name: "",
-      middle_name: "",
-      last_name: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
       email: "",
       unit: "",
       designation: "",
-      status: "",
+      employeeStatus: "",
     });
 
     console.log("Successfully passed form data to employee card");
@@ -108,24 +108,24 @@ export default function CreateEmployeeForm({
         className="w-full mx-auto bg-white p-6 shadow-md rounded-md grid grid-cols-2 gap-8"
       >
         <InputTextField
-          name="first_name"
-          placeholder={initialData ? initialData.first_name : "First Name"}
+          name="firstName"
+          placeholder={initialData ? initialData.firstName : "First Name"}
           onChange={handleInputChange}
-          value={formData.first_name}
+          value={formData.firstName}
           className="mb-4"
         />
         <InputTextField
-          name="middle_name"
-          placeholder={initialData ? initialData.middle_name : "Middle Name"}
+          name="middleName"
+          placeholder={initialData ? initialData.middleName : "Middle Name"}
           onChange={handleInputChange}
-          value={formData.middle_name}
+          value={formData.middleName}
           className="mb-4"
         />
         <InputTextField
-          name="last_name"
-          placeholder={initialData ? initialData.last_name : "Last Name"}
+          name="lastName"
+          placeholder={initialData ? initialData.lastName : "Last Name"}
           onChange={handleInputChange}
-          value={formData.last_name}
+          value={formData.lastName}
           className="mb-4"
         />
         <InputTextField

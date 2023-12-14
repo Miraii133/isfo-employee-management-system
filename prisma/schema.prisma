@@ -16,6 +16,7 @@ model User {
   firstName      String
   middleName     String
   lastName       String
+  unit           String
   designation    String
   employeeStatus String
 }

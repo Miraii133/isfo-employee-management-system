@@ -10,13 +10,16 @@ export default function MultipleViewPage() {
 
   const handleSelectedEmployee = (employeeId) => {
     router.push(
-      "/main/single-view-page/[id]",
+      //"/main/single-view-page/[id]",
       `/main/single-view-page/${employeeId}`
     );
 
     setVisibleCreateEmployeeForm(true);
   };
   const [message, setMessage] = useState([]);
+   const [employeeDataArray, setEmployeeDataArray] = useState([]);
+  const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
+    useState(false);
   useEffect(() => {
     const getEmployee = async () => {
       try {
@@ -38,15 +41,48 @@ export default function MultipleViewPage() {
     getEmployee();
   }, []);
 
-  // const [employeeDataArray, setEmployeeDataArray] = useState([]);
-  const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
-    useState(false);
+  const addEmployee = async () => {
+   try {
+        const response = await fetch('/api/employee', {
+          method: 'POST',
+          body: JSON.stringify(employeeDataArray),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-  const handleOnFormSubmit = (formData) => {
-    setEmployeeDataArray([...employeeDataArray, formData]);
-    setVisibleCreateEmployeeForm(false);
+        if (!response.ok) {
+          throw new Error('Failed to add employee');
+        }
+
+        // You can handle the response as needed
+        const addedEmployee = await response.json();
+        console.log('Employee added successfully:', addedEmployee)
+
+      } catch (error) {
+        console.error('Error adding employee:', error);
+      }
+    }
+  
+    // checks if form is submitted first
+    // before triggering addEmployee()
+    // since useEffect is triggered every
+    // component lifecycle actions to avoid
+    // triggering addEmployee when component is mounted
+
+ const [formSubmitted, setFormSubmitted] = useState(false);
+  useEffect(() => {
+    if (formSubmitted) {
+      addEmployee();
+      setVisibleCreateEmployeeForm(false);
+      setFormSubmitted(false); //
+    }
+  }, [formSubmitted]);
+
+  const handleOnFormSubmit = async (formData) => {
+    setEmployeeDataArray(formData);
+    setFormSubmitted(true);
   };
-
   const visibleForm = () => {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
   };
@@ -79,7 +115,7 @@ export default function MultipleViewPage() {
                     email={message[index].email}
                     designation={message[index].designation}
                     status={message[index].employeeStatus}
-                    onClick={handleSelectedEmployee}
+                    onClick={() => handleSelectedEmployee(message[index].id)}
                   />
                   {/* {message[index].id + " , " + message[index].email + " ," + message[index].name} */}
                 </div>
