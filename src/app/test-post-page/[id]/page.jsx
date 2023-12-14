@@ -5,6 +5,8 @@ import EmployeeCard from "../../components/EmployeeCard"
 const Page = ({params}) => {
   
   const [message, setMessage] = useState([]);
+  const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
+    useState(false);
 
   useEffect(() => {
   let employeeId = params.id
@@ -27,7 +29,48 @@ const Page = ({params}) => {
          getEmployee();
      }, []);
 
+        // checks if form is submitted first
+    // before triggering addEmployee()
+    // since useEffect is triggered every
+    // component lifecycle actions to avoid
+    // triggering addEmployee when component is mounted
+
+ const [formSubmitted, setFormSubmitted] = useState(false);
+  useEffect(() => {
+    if (formSubmitted) {
+      addEmployee();
+      setVisibleCreateEmployeeForm(false);
+      setFormSubmitted(false); //
+    }
+  }, [formSubmitted]);
+
+  const handleOnFormSubmit = async (formData) => {
+    setEmployeeDataArray(formData);
+    setFormSubmitted(true);
+  };
+  const visibleForm = () => {
+    setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
+  };
+
  return (
+
+  <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-screen-lg">
+        <div className="flex items-center justify-center p-10">
+          <button
+            onClick={visibleForm}
+            className="w-3/4 p-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            {visibleCreateEmployeeForm ? "Close Form" : "Add Employee"}
+          </button>
+        </div>
+
+        <div className="p-10">
+          {visibleCreateEmployeeForm && (
+            <CreateEmployeeForm onFormSubmit={handleOnFormSubmit} />
+          )}
+        </div>
+    <div className="flex flex-wrap p-10"></div>
       <div key={message.id}>
         <EmployeeCard
           fullname={`${message.firstName} ${message.middleName} ${message.lastName}`}
@@ -37,29 +80,14 @@ const Page = ({params}) => {
         />
         {message.id + " , " + message.email + " ," + message.firstName}
       </div>
-    );
- 
+      </div>
 
-   
-          /*message.map((data, key) => {
-            if (data[key] != undefined){
-            return (
-              <div key={key}>
-                 {data[key].id +
-                " , " +
-                data[key].email +
-                " ," +
-                data[key].name 
-              }
-              </div>
-              
-            )
-            }
+    </div>
+ 
+)
+        
                 
-             
-                
-            })*/
-            
+         
   
        
     

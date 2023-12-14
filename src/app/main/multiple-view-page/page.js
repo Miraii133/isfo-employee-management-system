@@ -54,17 +54,25 @@ export default function MultipleViewPage() {
       }
     }
   
+    // checks if form is submitted first
+    // before triggering addEmployee()
+    // since useEffect is triggered every
+    // component lifecycle actions to avoid
+    // triggering addEmployee when component is mounted
 
+ const [formSubmitted, setFormSubmitted] = useState(false);
+  useEffect(() => {
+    if (formSubmitted) {
+      addEmployee();
+      setVisibleCreateEmployeeForm(false);
+      setFormSubmitted(false); //
+    }
+  }, [formSubmitted]);
 
   const handleOnFormSubmit = async (formData) => {
-  setEmployeeDataArray(formData);
-};
-    useEffect(() => {
-      addEmployee();
-      console.log(employeeDataArray)
-      setVisibleCreateEmployeeForm(false);
-    }, [employeeDataArray]); // This will trigger the effect whenever employeeDataArray changes
-
+    setEmployeeDataArray(formData);
+    setFormSubmitted(true);
+  };
   const visibleForm = () => {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
   };
