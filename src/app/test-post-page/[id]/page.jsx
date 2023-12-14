@@ -1,10 +1,12 @@
 "use client"
 import React, { useEffect, useState } from "react";
+import EmployeeCard from "../../components/EmployeeCard"
 
 const Page = ({params}) => {
   
   const [message, setMessage] = useState([]);
 
+  useEffect(() => {
   let employeeId = params.id
     const getEmployee = async () => {
       try {
@@ -17,61 +19,30 @@ const Page = ({params}) => {
         }
 
         const data = await response.json();
-        console.log(data);
-        setMessage(Object.keys(data).map(key => data[key]));
+        setMessage(data.users);
       } catch (error) {
         console.error('Error fetching employee data:', error);
       }
     };
+         getEmployee();
+     }, []);
 
-    // Call the function to fetch employee data
+     console.log(message)
+
+ return (
+      <div key={message.id}>
+        <EmployeeCard
+          fullname={`${message.firstName} ${message.middleName} ${message.lastName}`}
+          email={message.email}
+          designation={message.designation}
+          status={message.employeeStatus}
+        />
+        {message.id + " , " + message.email + " ," + message.firstName}
+      </div>
+    );
+ 
 
    
- /* const addEmployee = async (employeeData) => {
-      try {
-        const response = await fetch('/api/employee', {
-          method: 'POST',
-          body: JSON.stringify(employeeData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to add employee');
-        }
-
-        // You can handle the response as needed
-        const addedEmployee = await response.json();
-        console.log('Employee added successfully:', addedEmployee)
-
-      } catch (error) {
-        console.error('Error adding employee:', error);
-      }
-    };
-
-    // Call getEmployee to fetch existing data when the component mounts
-    getEmployee();
-
-
-    // Call addEmployee with the necessary data
-    /*const employeeData = {
-      id: 3,
-      email: 'jiyo@asdasasdasdsadgmail.com',
-      firstName: 'Jiyo',
-      middleName: 'Nercuit',
-      lastName: 'Valmoria',
-      designation: 'NTP',
-      employeeStatus: 'active'
-    };
-    addEmployee(employeeData);*/
-   
-
-    return (
-      <div>
-        {
-          
-      
           /*message.map((data, key) => {
             if (data[key] != undefined){
             return (
@@ -91,13 +62,9 @@ const Page = ({params}) => {
                 
             })*/
             
-           
-        }
-
-         
-        </div>
+  
        
-    )
+    
 
 
   }
