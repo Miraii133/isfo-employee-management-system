@@ -4,7 +4,7 @@
     "moduleResolution": "bundler",
     "baseUrl": "./",
     "paths": {
-      "@/components/*": ["components/*"]
+      "@/*": ["./src/*"]
     }
   }
 }
