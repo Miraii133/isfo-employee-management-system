@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   const users = await prisma.user.findMany();
-  console.log(users);
   return NextResponse.json({ users, status: 200 });
 }
 // export async function HEAD(Request) {}

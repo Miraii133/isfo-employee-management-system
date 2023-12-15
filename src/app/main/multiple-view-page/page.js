@@ -10,7 +10,7 @@ export default function MultipleViewPage() {
 
   const handleSelectedEmployee = (employeeId) => {
     router.push(
-      //"/main/single-view-page/[id]",
+      //`/main/single-view-page/[id]`,
       `/main/single-view-page/${employeeId}`
     );
 
