@@ -29,6 +29,26 @@ Finally, you can now run the Next JS website by entering
 
 ```bash
 npm run dev
+
 ```
+
+## For Opening and Prisma Studio
+
+```bash
+npx prisma studio
+```
+
+## For Unit Testing
+
+```bash
+npm run test
+```
+
+## Pages Explanation
+
+We have 2 pages:
+single-view-page and mutiple-view-page
+
+mutiple-view-page has ALL the employee card upon clicking a specific card it will direct you to single-view-page showing the data of that card and the functionality to update and delete
 
 To open the website, type [http://localhost:3000](http://localhost:3000) in your web browser.
