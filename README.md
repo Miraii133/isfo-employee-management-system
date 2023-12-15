@@ -32,6 +32,11 @@ npm run dev
 
 ```
 
+## Setting up Prisma 
+```bash
+npx prisma migrate dev --name init
+```
+
 ## For Opening and Prisma Studio
 
 ```bash
@@ -52,3 +57,11 @@ single-view-page and mutiple-view-page
 mutiple-view-page has ALL the employee card upon clicking a specific card it will direct you to single-view-page showing the data of that card and the functionality to update and delete
 
 To open the website, type [http://localhost:3000](http://localhost:3000) in your web browser.
+
+## Libraries used
+
+[prisma](https://www.prisma.io/)\
+[@testing-library/jest-dom](https://www.npmjs.com/package/@testing-library/jest-dom)\
+[@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/)\
+[jest](https://jestjs.io/)\
+[jest-environment-jsdom](https://www.npmjs.com/package/jest-environment-jsdom)
