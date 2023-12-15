@@ -17,7 +17,7 @@ export default function MultipleViewPage() {
     setVisibleCreateEmployeeForm(true);
   };
   const [message, setMessage] = useState([]);
-   const [employeeDataArray, setEmployeeDataArray] = useState([]);
+  const [employeeDataArray, setEmployeeDataArray] = useState([]);
   const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
     useState(false);
   useEffect(() => {
@@ -42,35 +42,34 @@ export default function MultipleViewPage() {
   }, []);
 
   const addEmployee = async () => {
-   try {
-        const response = await fetch('/api/employee', {
-          method: 'POST',
-          body: JSON.stringify(employeeDataArray),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+    try {
+      const response = await fetch("/api/employee", {
+        method: "POST",
+        body: JSON.stringify(employeeDataArray),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to add employee');
-        }
-
-        // You can handle the response as needed
-        const addedEmployee = await response.json();
-        console.log('Employee added successfully:', addedEmployee)
-
-      } catch (error) {
-        console.error('Error adding employee:', error);
+      if (!response.ok) {
+        throw new Error("Failed to add employee");
       }
-    }
-  
-    // checks if form is submitted first
-    // before triggering addEmployee()
-    // since useEffect is triggered every
-    // component lifecycle actions to avoid
-    // triggering addEmployee when component is mounted
 
- const [formSubmitted, setFormSubmitted] = useState(false);
+      // You can handle the response as needed
+      const addedEmployee = await response.json();
+      console.log("Employee added successfully:", addedEmployee);
+    } catch (error) {
+      console.error("Error adding employee:", error);
+    }
+  };
+
+  // checks if form is submitted first
+  // before triggering addEmployee()
+  // since useEffect is triggered every
+  // component lifecycle actions to avoid
+  // triggering addEmployee when component is mounted
+
+  const [formSubmitted, setFormSubmitted] = useState(false);
   useEffect(() => {
     if (formSubmitted) {
       addEmployee();

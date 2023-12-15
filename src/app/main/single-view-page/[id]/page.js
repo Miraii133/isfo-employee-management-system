@@ -1,129 +1,106 @@
-// SingleViewPage.js
-
 "use client";
-import React, { useState, useEffect } from "react";
-import CreateEmployeeForm from "@/app/components/CreateEmployeeForm";
+// Import React
+import React, { useState } from "react";
+
 import EmployeeCard from "@/app/components/EmployeeCard";
+import CreateEmployeeForm from "@/app/components/CreateEmployeeForm";
 
-const SingleViewPage = ({ params }) => {
-  const [employeeData, setEmployeeData] = useState({});
+// Functional component
+export default function MappingDataToEmployeeCard() {
+  // State to manage employee data array
+  const [employeeDataArray, setEmployeeDataArray] = React.useState([]);
   const [visibleCreateEmployeeForm, setVisibleCreateEmployeeForm] =
-    useState(true);
-  useEffect(() => {
-    const getEmployee = async () => {
-      try {
-        const response = await fetch(`/api/employee/${params.id}`, {
-          method: "GET",
-        });
+    useState(false);
+  const [selectedEmployeeIndex, setSelectedEmployeeIndex] = useState(null);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch employee data");
-        }
-
-        const data = await response.json();
-        setEmployeeData(data.users);
-      } catch (error) {
-        console.error("Error fetching employee data:", error);
-      }
-    };
-
-    getEmployee();
-  }, [params.id]);
-
-  const handleUpdateFormSubmit = async (formData) => {
+  const updateEmployee = async () => {
     try {
-      const response = await fetch(`/api/employee/${params.id}`, {
-        method: "PATCH",
-        body: JSON.stringify(formData),
+      const response = await fetch("/api/employee", {
+        method: "POST",
+        body: JSON.stringify(employeeDataArray),
         headers: {
           "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update employee");
+        throw new Error("Failed to add employee");
       }
 
-      const updatedEmployee = await response.json();
-      console.log("Employee updated successfully:", updatedEmployee);
-
-      // Update the local state with the modified form data
-      setEmployeeData((prevData) => ({
-        ...prevData,
-        ...updatedEmployee,
-      }));
-
-      // Close the form after successful update
-      setVisibleCreateEmployeeForm(false);
+      // You can handle the response as needed
+      const addedEmployee = await response.json();
+      console.log("Employee added successfully:", addedEmployee);
     } catch (error) {
-      console.error("Error updating employee:", error);
+      console.error("Error adding employee:", error);
     }
   };
 
-  const deleteEmployee = async () => {
-    try {
-      const response = await fetch(`/api/employee/${params.id}`, {
-        method: "DELETE",
-        body: JSON.stringify(params.id)
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete employee");
-      }
-
-      console.log("Employee deleted successfully");
-
-      // Update the local state or trigger a re-fetch
-      setEmployeeData({});
-    } catch (error) {
-      console.error("Error deleting employee:", error);
+  const handleUpdateEmployee = async (formData) => {
+    if (selectedEmployeeIndex !== null) {
+      // Update existing employee data
+      const updatedEmployeeDataArray = [...employeeDataArray];
+      updatedEmployeeDataArray[selectedEmployeeIndex] = formData;
+      await setEmployeeDataArray(updatedEmployeeDataArray);
+      setSelectedEmployeeIndex(null); // Reset selected index after update
+      updateEmployee();
     }
+
+    setVisibleCreateEmployeeForm(false);
   };
 
-  const toggleFormVisibility = () => {
+  // Function to handle clicking on an employee card
+  const handleCardClick = (index) => {
+    setVisibleCreateEmployeeForm(true);
+    setSelectedEmployeeIndex(index);
+  };
+
+  // Toggle form visibility
+  const visibleForm = () => {
     setVisibleCreateEmployeeForm((prevVisibility) => !prevVisibility);
+    setSelectedEmployeeIndex(null); // Reset selected index when showing/hiding the form
   };
 
+  // JSX to render components
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-screen-lg">
         <div className="flex items-center justify-center p-10">
           <button
-            onClick={toggleFormVisibility}
-            className="w-full p-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={visibleForm}
+            className="w-3/4 p-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             {visibleCreateEmployeeForm ? "Close Form" : "Update Employee"}
-          </button>
-          <button
-            onClick={deleteEmployee}
-            className="w-full p-6 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Delete
           </button>
         </div>
 
         <div className="p-10">
           {visibleCreateEmployeeForm && (
             <CreateEmployeeForm
-              onFormSubmit={handleUpdateFormSubmit}
-              initialData={employeeData}
+              onFormSubmit={handleUpdateEmployee}
+              initialData={
+                selectedEmployeeIndex !== null
+                  ? employeeDataArray[selectedEmployeeIndex]
+                  : null
+              }
             />
           )}
         </div>
 
         <div className="flex flex-wrap p-10">
-          <div>
-            <EmployeeCard
-              fullname={`${employeeData.firstName} ${employeeData.middleName} ${employeeData.lastName}`}
-              email={employeeData.email}
-              designation={employeeData.designation}
-              status={employeeData.employeeStatus}
-            />
-          </div>
+          {employeeDataArray.map(
+            (employeeData, index) =>
+              selectedEmployeeIndex === index && (
+                <div key={index}>
+                  <EmployeeCard
+                    id={employeeData.id}
+                    {...employeeData}
+                    onClick={() => handleCardClick(index)}
+                  />
+                </div>
+              )
+          )}
         </div>
       </div>
     </div>
   );
-};
-
-export default SingleViewPage;
+}
